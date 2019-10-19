@@ -1,9 +1,18 @@
 import { Router } from 'express';
 
-import UserController from './app/controllers/userControllers';
+import UserController from './app/controllers/UserController';
+import SessionController from './app/controllers/SessionController';
+
+import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
 
+// Rotas abertas
+routes.post('/sessions', SessionController.store);
+
+// Rotas Protegidas
+routes.use(authMiddleware);
 routes.post('/users', UserController.store);
+routes.put('/users', UserController.update);
 
 export default routes;
