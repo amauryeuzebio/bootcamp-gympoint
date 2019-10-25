@@ -5,6 +5,7 @@ import SessionController from './app/controllers/SessionController';
 import StudentController from './app/controllers/StudentController';
 import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
+import CheckinController from './app/controllers/CheckinController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -23,13 +24,15 @@ routes.get('/students', StudentController.index);
 routes.get('/students/:id', StudentController.show);
 routes.post('/students', StudentController.store);
 routes.put('/students/:id', StudentController.update);
+
+routes.post('/students/:id/checkins', CheckinController.store);
 // Plans
 routes.get('/plans', PlanController.index);
 routes.get('/plans/:id', PlanController.show);
 routes.post('/plans', PlanController.store);
 routes.put('/plans/:id', PlanController.update);
 routes.delete('/plans/:id', PlanController.delete);
-// Plans
+// Registrations
 routes.get('/registrations', RegistrationController.index);
 routes.get('/registrations/:id', RegistrationController.show);
 routes.post('/registrations', RegistrationController.store);
