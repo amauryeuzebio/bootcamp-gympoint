@@ -6,6 +6,8 @@ import StudentController from './app/controllers/StudentController';
 import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
 import CheckinController from './app/controllers/CheckinController';
+import HelpOrderController from './app/controllers/HelpOrderController';
+import UnansweredOrderController from './app/controllers/UnansweredOrderController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -13,6 +15,8 @@ const routes = new Router();
 
 /** Rotas Abertas */
 routes.post('/sessions', SessionController.store);
+routes.post('/students/:id/checkins', CheckinController.store);
+routes.post('/students/:id/help-orders', HelpOrderController.store);
 
 /** Rotas Protegidas */
 routes.use(authMiddleware);
@@ -24,8 +28,6 @@ routes.get('/students', StudentController.index);
 routes.get('/students/:id', StudentController.show);
 routes.post('/students', StudentController.store);
 routes.put('/students/:id', StudentController.update);
-
-routes.post('/students/:id/checkins', CheckinController.store);
 // Plans
 routes.get('/plans', PlanController.index);
 routes.get('/plans/:id', PlanController.show);
@@ -38,5 +40,9 @@ routes.get('/registrations/:id', RegistrationController.show);
 routes.post('/registrations', RegistrationController.store);
 routes.put('/registrations/:id', RegistrationController.update);
 routes.delete('/registrations/:id', RegistrationController.delete);
+// Help Orders
+routes.get('/unansweredOrders', UnansweredOrderController.index);
+routes.get('/students/:id/help-orders', HelpOrderController.index);
+routes.put('/help-orders/:id/answer', HelpOrderController.update);
 
 export default routes;
