@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
+import Mail from '../../lib/Mail';
 
 class HelpOrderController {
   async index(req, res) {
@@ -48,7 +49,12 @@ class HelpOrderController {
 
     const { answer } = req.body;
 
-    const order = await HelpOrder.findByPk(id);
+    const order = await HelpOrder.findOne({
+      where: { id },
+      include: [
+        { model: Student, as: 'student', attributes: ['id', 'name', 'email'] },
+      ],
+    });
 
     if (!order) {
       return res.status(400).json({ error: 'Order not exists!' });
@@ -57,6 +63,12 @@ class HelpOrderController {
     order.update({
       answer,
       answer_at: new Date(),
+    });
+
+    await Mail.sendMail({
+      to: `${order.student.name} <${order.student.email}>`,
+      subject: 'Ordem de ajuda respondida!',
+      text: 'Sua duvida foi resolvida',
     });
 
     return res.json(order);
