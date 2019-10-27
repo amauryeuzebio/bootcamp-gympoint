@@ -1,9 +1,11 @@
 import * as Yup from 'yup';
-import { parseISO, addMonths } from 'date-fns';
+import { parseISO, addMonths, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
 import Plan from '../models/Plan';
 import Student from '../models/Student';
 import Registration from '../models/Registration';
+import Mail from '../../lib/Mail';
 
 class RegistrationController {
   async index(req, res) {
@@ -67,6 +69,25 @@ class RegistrationController {
       start_date: date,
       end_date,
       price: plan.total,
+    });
+
+    const student = await Student.findByPk(student_id);
+
+    const formattedData = format(end_date, "'dia' dd 'de' MMMM 'de' yyyy", {
+      locale: pt,
+    });
+
+    await Mail.sendMail({
+      to: `${student.name} <${student.email}>`,
+      subject: 'Matricula efetuada com sucesso!',
+      template: 'registration',
+      context: {
+        student: student.name,
+        plan: plan.title,
+        date: formattedData,
+        price: plan.total,
+      },
+      text: 'Parabéns! Sua matricula foi efetuada com sucesso!',
     });
 
     return res.json(registration);

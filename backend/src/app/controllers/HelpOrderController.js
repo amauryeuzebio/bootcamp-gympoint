@@ -68,6 +68,12 @@ class HelpOrderController {
     await Mail.sendMail({
       to: `${order.student.name} <${order.student.email}>`,
       subject: 'Ordem de ajuda respondida!',
+      template: 'answerOrderHelp',
+      context: {
+        student: order.student.name,
+        question: order.question,
+        answer: order.answer,
+      },
       text: 'Sua duvida foi resolvida',
     });
 
