@@ -1,7 +1,9 @@
 import * as Yup from 'yup';
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
-import Mail from '../../lib/Mail';
+
+import AnswerOrderMail from '../jobs/AnswerOrderMail';
+import Queue from '../../lib/Queue';
 
 class HelpOrderController {
   async index(req, res) {
@@ -65,17 +67,14 @@ class HelpOrderController {
       answer_at: new Date(),
     });
 
-    await Mail.sendMail({
-      to: `${order.student.name} <${order.student.email}>`,
-      subject: 'Ordem de ajuda respondida!',
-      template: 'answerOrderHelp',
-      context: {
-        student: order.student.name,
-        question: order.question,
-        answer: order.answer,
-      },
-      text: 'Sua duvida foi resolvida',
-    });
+    const email = {
+      student: order.student.name,
+      email: order.student.email,
+      question: order.question,
+      answer: order.answer,
+    };
+
+    await Queue.add(AnswerOrderMail.key, { email });
 
     return res.json(order);
   }

@@ -5,7 +5,9 @@ import pt from 'date-fns/locale/pt';
 import Plan from '../models/Plan';
 import Student from '../models/Student';
 import Registration from '../models/Registration';
-import Mail from '../../lib/Mail';
+
+import RegistrationMail from '../jobs/RegistrationMail';
+import Queue from '../../lib/Queue';
 
 class RegistrationController {
   async index(req, res) {
@@ -77,18 +79,15 @@ class RegistrationController {
       locale: pt,
     });
 
-    await Mail.sendMail({
-      to: `${student.name} <${student.email}>`,
-      subject: 'Matricula efetuada com sucesso!',
-      template: 'registration',
-      context: {
-        student: student.name,
-        plan: plan.title,
-        date: formattedData,
-        price: plan.total,
-      },
-      text: 'Parabéns! Sua matricula foi efetuada com sucesso!',
-    });
+    const email = {
+      student: student.name,
+      email: student.email,
+      plan: plan.title,
+      date: formattedData,
+      price: plan.total,
+    };
+
+    await Queue.add(RegistrationMail.key, { email });
 
     return res.json(registration);
   }
