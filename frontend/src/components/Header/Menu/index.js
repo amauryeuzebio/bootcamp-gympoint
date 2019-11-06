@@ -9,7 +9,7 @@ export default function Menu() {
     <Container>
       <MenuList>
         {links.map(link => (
-          <MenuItem key={link}>
+          <MenuItem key={link.label}>
             <MenuLink to={link.url} activeStyle={{ color: '#444444' }}>
               {link.label}
             </MenuLink>
