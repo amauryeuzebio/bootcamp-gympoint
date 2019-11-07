@@ -1,6 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
-import Route from '~/routes/Route';
+import { Switch, Route } from 'react-router-dom';
 
 import List from './List';
 import Form from './Form';
@@ -8,7 +7,7 @@ import Form from './Form';
 export default function Student() {
   return (
     <Switch>
-      <Route path="/student" component={List} isPrivate exact />
+      <Route path="/student" exact component={List} isPrivate />
       <Route path="/student/add" component={Form} isPrivate />
     </Switch>
   );
