@@ -85,6 +85,13 @@ class StudentController {
       email,
     });
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const student = await Student.destroy({ where: { id } });
+    return res.json(student);
+  }
 }
 
 export default new StudentController();
