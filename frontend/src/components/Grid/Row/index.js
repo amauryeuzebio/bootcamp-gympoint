@@ -7,5 +7,8 @@ export default function Row({ children, ...rest }) {
 }
 
 Row.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

@@ -6,6 +6,13 @@ export default function Th({ children, ...rest }) {
   return <CustomTh {...rest}>{children}</CustomTh>;
 }
 
+Th.defaultProps = {
+  children: '',
+};
+
 Th.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };

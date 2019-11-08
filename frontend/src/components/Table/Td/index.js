@@ -7,5 +7,8 @@ export default function Td({ children, ...rest }) {
 }
 
 Td.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

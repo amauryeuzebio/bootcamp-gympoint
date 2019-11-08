@@ -62,8 +62,8 @@ export default function Student() {
                 <Td align="center">{student.age}</Td>
                 <Td>
                   <Actions>
-                    <Edit>editar</Edit>
-                    <Del>apagar</Del>
+                    <Edit to="/studants/edit/:id">editar</Edit>
+                    <Del to="/studants/del/:id">apagar</Del>
                   </Actions>
                 </Td>
               </tr>

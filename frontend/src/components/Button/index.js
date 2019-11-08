@@ -16,7 +16,7 @@ export default function CustomButton({ type, label, icon, color, ...rest }) {
 
 CustomButton.defaultProps = {
   type: 'button',
-  icon: '',
+  icon: <></>,
   color: '#ee4d64',
 };
 
