@@ -64,7 +64,11 @@ export const Edit = styled(Link)`
   font-size: 15px;
 `;
 
-export const Del = styled(Link)`
+export const Del = styled.button`
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
   color: #de3b3b;
   font-size: 15px;
 `;

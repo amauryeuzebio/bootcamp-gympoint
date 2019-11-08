@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+
+import {
+  studentsSaveRequest,
+  resetForm,
+} from '~/store/modules/student/actions';
 
 import Button from '~/components/Button';
 import { Grid, Row, Column } from '~/components/Grid';
@@ -18,9 +25,24 @@ const schema = Yup.object().shape({
   height: Yup.number('Informe seu peso').required('Informe sua altura'),
 });
 
-export default function FormStudent() {
+export default function FormStudent({ match }) {
+  const student = useSelector(state => state.student.form);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // will Unmount
+    return () => {
+      dispatch(resetForm());
+    };
+    // eslint-disable-next-line
+  }, [])
+
   function handleSubmit(data) {
-    console.tron.log(data);
+    if (match.path === '/student/edit/:id') {
+      dispatch(studentsSaveRequest({ id: match.params.id, ...data }));
+    } else {
+      dispatch(studentsSaveRequest(data));
+    }
   }
 
   return (
@@ -34,9 +56,14 @@ export default function FormStudent() {
           <Button label="Salvar" type="submit" form="formStudent" />
         </Controls>
       </Header>
-
+      FormStudent
       <Body>
-        <Form id="formStudent" schema={schema} onSubmit={handleSubmit}>
+        <Form
+          initialData={student}
+          id="formStudent"
+          schema={schema}
+          onSubmit={handleSubmit}
+        >
           <Grid>
             <Row>
               <Column mobile="12" tablet="12" desktop="12">
@@ -85,3 +112,7 @@ export default function FormStudent() {
     </Container>
   );
 }
+
+FormStudent.propTypes = {
+  match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};

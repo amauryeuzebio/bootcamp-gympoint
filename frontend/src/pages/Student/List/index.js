@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
+
+import {
+  studentsGetRequest,
+  studentsDeleteRequest,
+} from '~/store/modules/student/actions';
 
 import Search from '~/components/Search';
 import Button from '~/components/Button';
@@ -19,6 +25,7 @@ import {
 } from './styles';
 
 export default function Student() {
+  const dispatch = useDispatch();
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
@@ -30,6 +37,14 @@ export default function Student() {
 
     loadStudents();
   }, []);
+
+  function handleEdit(id) {
+    dispatch(studentsGetRequest(id));
+  }
+
+  function handleDel(id) {
+    dispatch(studentsDeleteRequest(id));
+  }
 
   return (
     <Container>
@@ -62,8 +77,15 @@ export default function Student() {
                 <Td align="center">{student.age}</Td>
                 <Td>
                   <Actions>
-                    <Edit to="/studants/edit/:id">editar</Edit>
-                    <Del to="/studants/del/:id">apagar</Del>
+                    <Edit
+                      to={`/student/edit/${student.id}`}
+                      onClick={() => handleEdit(student.id)}
+                    >
+                      editar
+                    </Edit>
+                    <Del type="buttom" onClick={() => handleDel(student.id)}>
+                      apagar
+                    </Del>
                   </Actions>
                 </Td>
               </tr>

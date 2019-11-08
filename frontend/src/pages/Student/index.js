@@ -9,6 +9,7 @@ export default function Student() {
     <Switch>
       <Route path="/student" exact component={List} isPrivate />
       <Route path="/student/add" component={Form} isPrivate />
+      <Route path="/student/edit/:id" component={Form} isPrivate />
     </Switch>
   );
 }
