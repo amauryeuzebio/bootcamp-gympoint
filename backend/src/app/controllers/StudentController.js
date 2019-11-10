@@ -1,16 +1,28 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+
 import Student from '../models/Student';
 
 class StudentController {
   async index(req, res) {
-    const { page = 1 } = req.query; // se não for informado por padrão pagina 1
-    console.log(`page: ${page}`);
+    const { page = 1, q } = req.query; // se não for informado por padrão pagina 1
     const perPage = process.env.PER_PAGE || 10;
     const pageNeighbours = process.env.NEIGHBOURS || 2;
 
-    const count = await Student.count();
+    const count = await Student.count({
+      where: {
+        name: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
+    });
 
     const students = await Student.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
       order: ['name'],
       limit: perPage,
       offset: (page - 1) * perPage,
