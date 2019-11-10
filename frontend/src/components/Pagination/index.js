@@ -111,25 +111,25 @@ export default function Pagination({
 
   return (
     <>
-      <nav aria-label="Countries Pagination">
+      <nav>
         <Container>
           {pages.map((page, index) => {
             if (page === LEFT_PAGE)
               return (
-                <li key={index.toString()} className="page-item">
+                <li key={index.toString()}>
                   <ButtonAction type="button" onClick={handleMoveLeft}>
-                    <span aria-hidden="true">&laquo;</span>
-                    <span className="sr-only">Anterior</span>
+                    <span>&laquo;</span>
+                    <span>Anterior</span>
                   </ButtonAction>
                 </li>
               );
 
             if (page === RIGHT_PAGE)
               return (
-                <li key={index.toString()} className="page-item">
+                <li key={index.toString()}>
                   <ButtonAction type="button" onClick={handleMoveRight}>
-                    <span aria-hidden="true">&raquo;</span>
-                    <span className="sr-only">Proximo</span>
+                    <span>&raquo;</span>
+                    <span>Proximo</span>
                   </ButtonAction>
                 </li>
               );

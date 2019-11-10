@@ -30,13 +30,14 @@ export default function Student() {
   const [students, setStudents] = useState([]);
 
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageLimit, setPageLimit] = useState(20);
   const [pageNeighbours, setPageNeighbours] = useState(2);
 
   useEffect(() => {
     async function loadStudents() {
-      const response = await api.get(`students?page=${page || 1}`);
+      const response = await api.get(`students?q=${search}&page=${page || 1}`);
 
       setStudents(response.data.students);
       setTotalRecords(response.data.totalRecords);
@@ -45,7 +46,7 @@ export default function Student() {
     }
 
     loadStudents();
-  }, [page]);
+  }, [page, search]);
 
   function handleEdit(id) {
     dispatch(studentsGetRequest(id));
@@ -68,7 +69,7 @@ export default function Student() {
           <Link to="/student/add">
             <Button label="Cadastrar" icon={<MdAdd size={24} />} />
           </Link>
-          <Search />
+          <Search setSearch={setSearch} />
         </Controls>
       </Header>
 

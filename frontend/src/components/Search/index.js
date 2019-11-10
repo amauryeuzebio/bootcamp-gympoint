@@ -1,17 +1,19 @@
 import React from 'react';
-import PropsTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { MdSearch } from 'react-icons/md';
 import { Container, Search } from './styles';
 
-export default function InputSearch() {
+export default function InputSearch({ setSearch }) {
   return (
     <Container>
       <MdSearch size={24} />
-      <Search />
+      <Search
+        onKeyPress={e => (e.key === 'Enter' ? setSearch(e.target.value) : '')}
+      />
     </Container>
   );
 }
 
-InputSearch.PropsTypes = {
-  handleSearch: PropsTypes.func.isRequired,
+InputSearch.propTypes = {
+  setSearch: PropTypes.func.isRequired,
 };
