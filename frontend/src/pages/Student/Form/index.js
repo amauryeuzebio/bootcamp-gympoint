@@ -56,7 +56,6 @@ export default function FormStudent({ match }) {
           <Button label="Salvar" type="submit" form="formStudent" />
         </Controls>
       </Header>
-      FormStudent
       <Body>
         <Form
           initialData={student}

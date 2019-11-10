@@ -9868,6 +9868,16 @@ svgo@^1.0.0, svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+sweetalert2-react-content@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/sweetalert2-react-content/-/sweetalert2-react-content-2.0.2.tgz#bb3888d7ebfb2725eb8e2ce508621370bca7ab85"
+  integrity sha512-UmqwSRBMq2sVNts84tybZfAfNq5ULxLvIz59CsXtMD/d/b4CVgXFcKds0z7GE5C0AKvFdnUNUO/yjC4lazKS2Q==
+
+sweetalert2@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-9.2.0.tgz#357c29c1df480343221db8bb421eedf8a4b4d885"
+  integrity sha512-57vw5Hk6Mo9F2kXrkQ/KOacCSRaFYwI1LqVwKWtO9ca5Fa9avg3P6BzcHuwDrmIWTfkjwIPfgP+O9Y9wiYEtAg==
+
 symbol-observable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"

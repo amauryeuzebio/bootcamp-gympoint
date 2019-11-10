@@ -12,6 +12,7 @@ import Search from '~/components/Search';
 import Button from '~/components/Button';
 import { Table, Td, Th } from '~/components/Table';
 import Pagination from '~/components/Pagination';
+import Alert from '~/util/alert';
 
 import api from '~/services/api';
 
@@ -52,8 +53,14 @@ export default function Student() {
     dispatch(studentsGetRequest(id));
   }
 
-  function handleDel(id) {
-    dispatch(studentsDeleteRequest(id));
+  function handleDel(id, name) {
+    Alert.delete(`Remover permanentemente ${name}?`).then(confirm => {
+      if (confirm.value) {
+        dispatch(studentsDeleteRequest(id));
+
+        setStudents(students.filter(s => s.id !== id));
+      }
+    });
   }
 
   function onPageChanged(data) {
@@ -77,10 +84,12 @@ export default function Student() {
         <Table>
           <thead>
             <tr>
-              <Th>NOME</Th>
-              <Th>EMAIL</Th>
-              <Th align="center">IDADE</Th>
-              <Th />
+              <Th width="35%">NOME</Th>
+              <Th width="35%">EMAIL</Th>
+              <Th width="20%" align="center">
+                IDADE
+              </Th>
+              <Th width="10%" />
             </tr>
           </thead>
           <tbody>
@@ -97,7 +106,10 @@ export default function Student() {
                     >
                       editar
                     </Edit>
-                    <Del type="buttom" onClick={() => handleDel(student.id)}>
+                    <Del
+                      type="buttom"
+                      onClick={() => handleDel(student.id, student.name)}
+                    >
                       apagar
                     </Del>
                   </Actions>
