@@ -3,9 +3,28 @@ import Student from '../models/Student';
 
 class StudentController {
   async index(req, res) {
-    const students = await Student.findAll();
+    const { page = 1 } = req.query; // se não for informado por padrão pagina 1
+    console.log(`page: ${page}`);
+    const perPage = process.env.PER_PAGE || 10;
+    const pageNeighbours = process.env.NEIGHBOURS || 2;
 
-    return res.json(students);
+    const count = await Student.count();
+
+    const students = await Student.findAll({
+      order: ['name'],
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    const data = {
+      totalPages: Math.ceil(count / perPage),
+      totalRecords: count,
+      pageLimit: perPage,
+      pageNeighbours,
+      students,
+    };
+
+    return res.json(data);
   }
 
   async show(req, res) {
