@@ -11,6 +11,7 @@ import {
 import Search from '~/components/Search';
 import Button from '~/components/Button';
 import { Table, Td, Th } from '~/components/Table';
+import Pagination from '~/components/Pagination';
 
 import api from '~/services/api';
 
@@ -28,15 +29,23 @@ export default function Student() {
   const dispatch = useDispatch();
   const [students, setStudents] = useState([]);
 
+  const [page, setPage] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [pageLimit, setPageLimit] = useState(20);
+  const [pageNeighbours, setPageNeighbours] = useState(2);
+
   useEffect(() => {
     async function loadStudents() {
-      const response = await api.get('students');
+      const response = await api.get(`students?page=${page || 1}`);
 
-      setStudents(response.data);
+      setStudents(response.data.students);
+      setTotalRecords(response.data.totalRecords);
+      setPageLimit(response.data.pageLimit);
+      setPageNeighbours(response.data.pageNeighbours);
     }
 
     loadStudents();
-  }, []);
+  }, [page]);
 
   function handleEdit(id) {
     dispatch(studentsGetRequest(id));
@@ -44,6 +53,10 @@ export default function Student() {
 
   function handleDel(id) {
     dispatch(studentsDeleteRequest(id));
+  }
+
+  function onPageChanged(data) {
+    setPage(data.currentPage);
   }
 
   return (
@@ -92,6 +105,12 @@ export default function Student() {
             ))}
           </tbody>
         </Table>
+        <Pagination
+          totalRecords={Number(totalRecords)}
+          pageLimit={Number(pageLimit)}
+          pageNeighbours={Number(pageNeighbours)}
+          onPageChanged={onPageChanged}
+        />
       </Body>
     </Container>
   );
