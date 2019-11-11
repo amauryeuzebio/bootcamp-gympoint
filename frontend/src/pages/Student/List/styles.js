@@ -48,6 +48,7 @@ export const Controls = styled.div`
 
 export const Body = styled.div`
   max-width: 1200px;
+  min-height: 550px;
   background: #fff;
   border-radius: 4px;
   padding: 30px;

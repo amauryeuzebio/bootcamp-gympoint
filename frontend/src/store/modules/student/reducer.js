@@ -2,6 +2,7 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   form: {},
+  delete: 0,
   loading: false,
 };
 
@@ -18,6 +19,10 @@ export default function student(state = INITIAL_STATE, action) {
       }
       case '@student/GET_SUCCESS': {
         draft.form = action.payload.data;
+        break;
+      }
+      case '@student/DELETE_SUCCESS': {
+        draft.delete = action.id;
         break;
       }
       case '@student/ON_FAILURE': {

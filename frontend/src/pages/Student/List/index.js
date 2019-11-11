@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
@@ -28,6 +28,7 @@ import {
 
 export default function Student() {
   const dispatch = useDispatch();
+  const deleteId = useSelector(state => state.student.delete);
   const [students, setStudents] = useState([]);
 
   const [page, setPage] = useState(1);
@@ -47,7 +48,25 @@ export default function Student() {
     }
 
     loadStudents();
-  }, [page, search]);
+  }, [page]); // eslint-disable-line
+
+  useEffect(() => {
+    setPage(1);
+    async function loadStudents() {
+      const response = await api.get(`students?q=${search}&page=${1}`);
+
+      setStudents(response.data.students);
+      setTotalRecords(response.data.totalRecords);
+      setPageLimit(response.data.pageLimit);
+      setPageNeighbours(response.data.pageNeighbours);
+    }
+
+    loadStudents();
+  }, [search]);
+
+  useMemo(() => {
+    setStudents(students.filter(s => s.id !== deleteId));
+  }, [deleteId]); // eslint-disable-line
 
   function handleEdit(id) {
     dispatch(studentsGetRequest(id));
@@ -57,8 +76,6 @@ export default function Student() {
     Alert.delete(`Remover permanentemente ${name}?`).then(confirm => {
       if (confirm.value) {
         dispatch(studentsDeleteRequest(id));
-
-        setStudents(students.filter(s => s.id !== id));
       }
     });
   }
@@ -123,6 +140,7 @@ export default function Student() {
           pageLimit={Number(pageLimit)}
           pageNeighbours={Number(pageNeighbours)}
           onPageChanged={onPageChanged}
+          currentPage={page}
         />
       </Body>
     </Container>

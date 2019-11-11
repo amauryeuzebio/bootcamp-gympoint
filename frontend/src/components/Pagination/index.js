@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Container, ButtonAction, ButtonPage } from './styles';
 
 export default function Pagination({
+  currentPage,
   totalRecords,
   pageLimit,
   pageNeighbours,
   onPageChanged,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
   const LEFT_PAGE = 'LEFT';
   const RIGHT_PAGE = 'RIGHT';
@@ -27,7 +28,7 @@ export default function Pagination({
 
     onPageChanged(paginationData); // Retorna objeto para o componente
 
-    setCurrentPage(_page === 0 ? 1 : _page);
+    // setCurrentPage(_page === 0 ? 1 : _page);
   }
 
   useEffect(() => {
@@ -155,9 +156,11 @@ export default function Pagination({
 Pagination.defaultProps = {
   pageLimit: 20,
   pageNeighbours: 2,
+  currentPage: 1,
 };
 
 Pagination.propTypes = {
+  currentPage: PropTypes.number,
   totalRecords: PropTypes.number.isRequired,
   pageLimit: PropTypes.number,
   pageNeighbours: PropTypes.number,
