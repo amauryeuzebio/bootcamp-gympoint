@@ -1,7 +1,15 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-// import { Container } from './styles';
+import List from './List';
+import Form from './Form';
 
 export default function Plan() {
-  return <h1>Planos</h1>;
+  return (
+    <Switch>
+      <Route path="/plan" exact component={List} isPrivate />
+      <Route path="/plan/add" component={Form} isPrivate />
+      <Route path="/plan/edit/:id" component={Form} isPrivate />
+    </Switch>
+  );
 }
