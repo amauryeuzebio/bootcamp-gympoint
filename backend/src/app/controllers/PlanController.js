@@ -1,11 +1,42 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+
 import Plan from '../models/Plan';
 
 class PlanController {
   async index(req, res) {
-    const plan = await Plan.findAll();
+    const { page = 1, q } = req.query; // se não for informado por padrão pagina 1
+    const perPage = process.env.PER_PAGE || 10;
+    const pageNeighbours = process.env.NEIGHBOURS || 2;
 
-    return res.json(plan);
+    const count = await Plan.count({
+      where: {
+        title: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
+    });
+
+    const students = await Plan.findAll({
+      where: {
+        title: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
+      order: ['title'],
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    const data = {
+      totalPages: Math.ceil(count / perPage),
+      totalRecords: count,
+      pageLimit: perPage,
+      pageNeighbours,
+      students,
+    };
+
+    return res.json(data);
   }
 
   async show(req, res) {

@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import { parseISO, addMonths, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
@@ -11,8 +12,25 @@ import Queue from '../../lib/Queue';
 
 class RegistrationController {
   async index(req, res) {
-    const registration = await Registration.findAll({
-      attributes: ['id', 'price', 'start_date', 'end_date'],
+    const { page = 1, q } = req.query; // se não for informado por padrão pagina 1
+    const perPage = process.env.PER_PAGE || 10;
+    const pageNeighbours = process.env.NEIGHBOURS || 2;
+
+    const count = await Registration.count({
+      where: {
+        [Op.or]: [
+          {
+            '$student.name$': {
+              [Op.iLike]: `%${q}%`,
+            },
+          },
+          {
+            '$plan.title$': {
+              [Op.iLike]: `%${q}%`,
+            },
+          },
+        ],
+      },
       include: [
         { model: Plan, as: 'plan', attributes: ['id', 'title'] },
         {
@@ -22,7 +40,44 @@ class RegistrationController {
         },
       ],
     });
-    return res.json(registration);
+
+    const registration = await Registration.findAll({
+      where: {
+        [Op.or]: [
+          {
+            '$student.name$': {
+              [Op.iLike]: `%${q}%`,
+            },
+          },
+          {
+            '$plan.title$': {
+              [Op.iLike]: `%${q}%`,
+            },
+          },
+        ],
+      },
+      attributes: ['id', 'price', 'start_date', 'end_date'],
+      include: [
+        { model: Plan, as: 'plan', attributes: ['id', 'title'] },
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    const data = {
+      totalPages: Math.ceil(count / perPage),
+      totalRecords: count,
+      pageLimit: perPage,
+      pageNeighbours,
+      registration,
+    };
+
+    return res.json(data);
   }
 
   async show(req, res) {
