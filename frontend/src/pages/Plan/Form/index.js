@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
@@ -9,6 +10,7 @@ import { plansSaveRequest, resetForm } from '~/store/modules/plan/actions';
 
 import Button from '~/components/Button';
 import { Grid, Row, Column } from '~/components/Grid';
+import CurrencyInput from '~/components/CurrencyInput';
 
 import {
   Container,
@@ -26,10 +28,14 @@ const schema = Yup.object().shape({
 });
 
 export default function FormPlan({ match }) {
-  const plan = useSelector(state => state.plan.form);
+  const { id } = useParams();
+  const formPlan = useSelector(state => state.plan.form);
+
   const dispatch = useDispatch();
+  const [plan, setPlan] = useState();
   const [duration, setDuration] = useState();
   const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState();
 
   useEffect(() => {
     // will Unmount
@@ -39,10 +45,31 @@ export default function FormPlan({ match }) {
     // eslint-disable-next-line
   }, [])
 
+  useMemo(() => {
+    async function loadPlan() {
+      if (id && formPlan && formPlan.price) {
+        setDuration(formPlan.duration);
+        setPrice(formPlan.price);
+        await setPlan(formPlan);
+      }
+    }
+    loadPlan();
+  }, [formPlan, id]);
+
   useEffect(() => {
-    setDuration(plan.duration);
-    setPrice(plan.price);
-  }, [plan.duration, plan.price]);
+    if (plan && plan.duration) {
+      setDuration(plan.duration);
+    }
+
+    if (plan && plan.price) {
+      setPrice(plan.price);
+    }
+  }, [plan]);
+
+  useMemo(() => {
+    const newTotalPrice = price * duration;
+    setTotalPrice(newTotalPrice);
+  }, [price, duration]); //eslint-disable-line
 
   function handleSubmit(data) {
     if (match.path === '/plan/edit/:id') {
@@ -65,10 +92,10 @@ export default function FormPlan({ match }) {
       </Header>
       <Body>
         <Form
-          initialData={plan}
           id="formPlan"
           schema={schema}
           onSubmit={handleSubmit}
+          initialData={plan}
         >
           <Grid>
             <Row>
@@ -86,6 +113,7 @@ export default function FormPlan({ match }) {
                   <strong>DURAÇÃO (em meses)</strong>
                   <Input
                     name="duration"
+                    type="number"
                     onChange={e => setDuration(e.target.value)}
                   />
                 </CustomInput>
@@ -93,16 +121,21 @@ export default function FormPlan({ match }) {
               <Column mobile="12" tablet="4" desktop="4">
                 <CustomInput>
                   <strong>PREÇO MENSAL</strong>
-                  <Input
+                  <CurrencyInput
                     name="price"
-                    onChange={e => setPrice(e.target.value)}
+                    getChange={price}
+                    setChange={setPrice}
                   />
                 </CustomInput>
               </Column>
               <Column mobile="12" tablet="4" desktop="4">
                 <ReadInput>
                   <strong>PREÇO TOTAL</strong>
-                  <Input name="total" readOnly value={duration * price || 0} />
+                  <CurrencyInput
+                    disabled
+                    name="totalPrice"
+                    getChange={totalPrice}
+                  />
                 </ReadInput>
               </Column>
             </Row>
