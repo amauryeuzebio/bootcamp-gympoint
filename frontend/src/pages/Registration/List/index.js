@@ -122,7 +122,7 @@ export default function Registration() {
                 TERMINO
               </Th>
               <Th width="20%" align="center">
-                ATIVO
+                ATIVA
               </Th>
               <Th width="10%" />
             </tr>
@@ -134,7 +134,7 @@ export default function Registration() {
                 <Td align="center">{registration.plan.title}</Td>
                 <Td align="center">{dateFormatted(registration.start_date)}</Td>
                 <Td align="center">{dateFormatted(registration.end_date)}</Td>
-                <Td align="center">ATIVO</Td>
+                <Td align="center">{registration.active ? 'SIM' : 'NÃO'}</Td>
                 <Td>
                   <Actions>
                     <Edit
