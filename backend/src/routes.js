@@ -44,6 +44,7 @@ routes.delete('/registrations/:id', RegistrationController.delete);
 // Help Orders
 routes.get('/unansweredOrders', UnansweredOrderController.index);
 routes.get('/students/:id/help-orders', HelpOrderController.index);
+routes.get('/help-orders/:id', HelpOrderController.show);
 routes.put('/help-orders/:id/answer', HelpOrderController.update);
 
 export default routes;

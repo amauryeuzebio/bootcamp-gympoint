@@ -14,6 +14,16 @@ class HelpOrderController {
     return res.json(orders);
   }
 
+  async show(req, res) {
+    const { id } = req.params;
+
+    const orders = await HelpOrder.findByPk(id, {
+      include: [{ model: Student, as: 'student', attributes: ['id', 'name'] }],
+    });
+
+    return res.json(orders);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       question: Yup.string().required(),

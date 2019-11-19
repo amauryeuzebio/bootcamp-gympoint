@@ -56,7 +56,7 @@ class RegistrationController {
           },
         ],
       },
-      attributes: ['id', 'price', 'start_date', 'end_date'],
+      attributes: ['id', 'price', 'start_date', 'end_date', 'active'],
       include: [
         { model: Plan, as: 'plan', attributes: ['id', 'title'] },
         {
