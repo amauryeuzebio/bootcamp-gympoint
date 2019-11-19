@@ -13,6 +13,7 @@ import Button from '~/components/Button';
 import { Table, Td, Th } from '~/components/Table';
 import Pagination from '~/components/Pagination';
 import Alert from '~/util/alert';
+import { formatCurrencyBR } from '~/util/format';
 
 import api from '~/services/api';
 
@@ -41,21 +42,43 @@ export default function Plan() {
     async function loadPlans() {
       const response = await api.get(`plans?q=${search}&page=${page || 1}`);
 
-      setPlan(response.data.students);
+      setPlan(
+        response.data.students.map(student => {
+          return {
+            ...student,
+            price: formatCurrencyBR(student.price),
+            duration:
+              student.duration === 1
+                ? `${student.duration} mês`
+                : `${student.duration} meses`,
+          };
+        })
+      );
       setTotalRecords(response.data.totalRecords);
       setPageLimit(response.data.pageLimit);
       setPageNeighbours(response.data.pageNeighbours);
     }
 
     loadPlans();
-  }, [page]); // eslint-disable-line
+  }, [page, search]);
 
   useEffect(() => {
     setPage(1);
     async function loadPlans() {
       const response = await api.get(`plans?q=${search}&page=${1}`);
 
-      setPlan(response.data.students);
+      setPlan(
+        response.data.students.map(student => {
+          return {
+            ...student,
+            price: formatCurrencyBR(student.price),
+            duration:
+              student.duration === 1
+                ? `${student.duration} mês`
+                : `${student.duration} meses`,
+          };
+        })
+      );
       setTotalRecords(response.data.totalRecords);
       setPageLimit(response.data.pageLimit);
       setPageNeighbours(response.data.pageNeighbours);
