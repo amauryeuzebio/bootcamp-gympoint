@@ -17,7 +17,7 @@ class PlanController {
       },
     });
 
-    const students = await Plan.findAll({
+    const plans = await Plan.findAll({
       where: {
         title: {
           [Op.iLike]: `%${q}%`,
@@ -33,7 +33,7 @@ class PlanController {
       totalRecords: count,
       pageLimit: perPage,
       pageNeighbours,
-      students,
+      plans,
     };
 
     return res.json(data);
