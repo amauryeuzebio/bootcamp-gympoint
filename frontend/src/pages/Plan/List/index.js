@@ -13,7 +13,7 @@ import Button from '~/components/Button';
 import { Table, Td, Th } from '~/components/Table';
 import Pagination from '~/components/Pagination';
 import Alert from '~/util/alert';
-import { formatCurrencyBR } from '~/util/format';
+import { formatCurrencyBR, formatDuration } from '~/util/format';
 
 import api from '~/services/api';
 
@@ -43,14 +43,11 @@ export default function Plan() {
       const response = await api.get(`plans?q=${search}&page=${page || 1}`);
 
       setPlan(
-        response.data.students.map(student => {
+        response.data.plans.map(plan => {
           return {
-            ...student,
-            price: formatCurrencyBR(student.price),
-            duration:
-              student.duration === 1
-                ? `${student.duration} mês`
-                : `${student.duration} meses`,
+            ...plan,
+            price: formatCurrencyBR(plan.price),
+            duration: formatDuration(plan.duration),
           };
         })
       );
@@ -68,14 +65,11 @@ export default function Plan() {
       const response = await api.get(`plans?q=${search}&page=${1}`);
 
       setPlan(
-        response.data.students.map(student => {
+        response.data.plans.map(plan => {
           return {
-            ...student,
-            price: formatCurrencyBR(student.price),
-            duration:
-              student.duration === 1
-                ? `${student.duration} mês`
-                : `${student.duration} meses`,
+            ...plan,
+            price: formatCurrencyBR(plan.price),
+            duration: formatDuration(plan.duration),
           };
         })
       );

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+import { format, addMonths } from 'date-fns';
 
 import {
   registrationsSaveRequest,
@@ -12,25 +13,30 @@ import {
 
 import Button from '~/components/Button';
 import { Grid, Row, Column } from '~/components/Grid';
+import DatePicker from '~/components/DatePicker';
+import PlanSelect from './PlanSelect';
+import StudentSelect from './StudentSelect';
+import { formatCurrencyBR } from '~/util/format';
 
-import {
-  Container,
-  Header,
-  Body,
-  Controls,
-  CustomInput,
-  ReadInput,
-} from './styles';
+import { Container, Header, Body, Controls, ReadInput } from './styles';
 
 const schema = Yup.object().shape({
-  student_id: Yup.number().required(),
-  plan_id: Yup.number().required(),
-  start_date: Yup.date().required(),
+  student_id: Yup.object()
+    .required('Aluno é obrigatorio!')
+    .nullable(),
+  plan_id: Yup.object()
+    .required('Plano é obrigatorio')
+    .nullable(),
+  start_date: Yup.date().required('Data de inicio é obrigatorio'),
 });
 
 export default function FormRegistration({ match }) {
   const registration = useSelector(state => state.registration.form);
   const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState();
+  const [newPlan, setNewPlan] = useState();
+  const [newStudent, setNewStudent] = useState();
+  const [total, setTotal] = useState();
 
   useEffect(() => {
     // will Unmount
@@ -40,11 +46,29 @@ export default function FormRegistration({ match }) {
     // eslint-disable-next-line
   }, [])
 
-  function handleSubmit(data) {
+  const end_date = useMemo(() => {
+    if (startDate && newPlan) {
+      setTotal(formatCurrencyBR(newPlan.duration * newPlan.price));
+      return format(addMonths(startDate, newPlan.duration), 'dd/MM/yyyy');
+    }
+    return '';
+  }, [newPlan, startDate]);
+
+  async function handleSubmit(data) {
+    const registrationData = await {
+      ...data,
+      student_id: newStudent.value,
+      plan_id: newPlan.value,
+    };
+
+    console.tron.log(registrationData);
+
     if (match.path === '/registration/edit/:id') {
-      dispatch(registrationsSaveRequest({ id: match.params.id, ...data }));
+      dispatch(
+        registrationsSaveRequest({ id: match.params.id, ...registrationData })
+      );
     } else {
-      dispatch(registrationsSaveRequest(data));
+      dispatch(registrationsSaveRequest(registrationData));
     }
   }
 
@@ -61,44 +85,47 @@ export default function FormRegistration({ match }) {
       </Header>
       <Body>
         <Form
-          initialData={registration}
           id="formRegistration"
           schema={schema}
           onSubmit={handleSubmit}
+          initialData={registration}
         >
           <Grid>
             <Row>
               <Column mobile="12" tablet="12" desktop="12">
-                <CustomInput>
-                  <strong>ALUNO</strong>
-                  <Input name="studant_id" placeholder="Buscar Aluno" />
-                </CustomInput>
+                <StudentSelect
+                  name="student_id"
+                  label="ALUNO"
+                  setChange={setNewStudent}
+                />
               </Column>
             </Row>
 
             <Row>
               <Column mobile="12" tablet="3" desktop="3">
-                <CustomInput>
-                  <strong>PLANO</strong>
-                  <Input name="aplan_id" placeholder="Selecione o Plano" />
-                </CustomInput>
+                <PlanSelect
+                  name="plan_id"
+                  label="PLANO"
+                  setChange={setNewPlan}
+                />
               </Column>
               <Column mobile="12" tablet="3" desktop="3">
-                <CustomInput>
-                  <strong>DATA INICIO</strong>
-                  <Input name="start_date" placeholder="Escolha a data" />
-                </CustomInput>
+                <DatePicker
+                  label="DATA INICIO"
+                  name="start_date"
+                  setChange={setStartDate}
+                />
               </Column>
               <Column mobile="12" tablet="3" desktop="3">
                 <ReadInput>
                   <strong>DATA TERMINO</strong>
-                  <Input name="end_date" readOnly />
+                  <Input name="end_date" value={end_date || ''} disabled />{' '}
                 </ReadInput>
               </Column>
               <Column mobile="12" tablet="3" desktop="3">
                 <ReadInput>
                   <strong>VALOR FINAL</strong>
-                  <Input name="total" readOnly />
+                  <Input name="total" value={total || 'R$ 0.00'} readOnly />
                 </ReadInput>
               </Column>
             </Row>
