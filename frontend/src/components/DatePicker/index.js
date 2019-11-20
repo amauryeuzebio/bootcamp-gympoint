@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import pt from 'date-fns/locale/pt';
 
@@ -38,7 +38,7 @@ export default function DatePicker({
     });
   }, [ref.current, fieldName]); // eslint-disable-line
 
-  useEffect(() => {
+  useMemo(() => {
     setSelected(getChange);
   }, [getChange]);
 

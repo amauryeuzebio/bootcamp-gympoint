@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import AsyncSelect from 'react-select/async';
 import PropTypes from 'prop-types';
 
@@ -8,9 +8,10 @@ import api from '~/services/api';
 
 import { Container } from './styles';
 
-export default function PlanSelect({ name, label, setChange }) {
+export default function PlanSelect({ name, label, setChange, getChange }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
+  const [selected, setSelected] = useState(defaultValue);
 
   function parseSelectValue(selectRef) {
     return selectRef.select.state.value;
@@ -27,6 +28,10 @@ export default function PlanSelect({ name, label, setChange }) {
       },
     });
   }, [ref.current, fieldName]); // eslint-disable-line
+
+  useMemo(() => {
+    setSelected(getChange);
+  }, [getChange]); // eslint-disable-line
 
   async function loadOptions(inputValue) {
     const res = await api.get('plans', {
@@ -57,8 +62,7 @@ export default function PlanSelect({ name, label, setChange }) {
       <AsyncSelect
         name={fieldName}
         aria-label={fieldName}
-        defaultValue
-        value={defaultValue}
+        value={selected || defaultValue}
         ref={ref}
         placeholder="Buscar Plano"
         loadOptions={loadOptions}
@@ -75,8 +79,10 @@ PlanSelect.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   setChange: PropTypes.func,
+  getChange: PropTypes.object,
 };
 
 PlanSelect.defaultProps = {
   setChange: PropTypes.null,
+  getChange: PropTypes.null,
 };

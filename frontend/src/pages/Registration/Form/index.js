@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { format, addMonths } from 'date-fns';
@@ -16,7 +16,7 @@ import { Grid, Row, Column } from '~/components/Grid';
 import DatePicker from '~/components/DatePicker';
 import PlanSelect from './PlanSelect';
 import StudentSelect from './StudentSelect';
-import { formatCurrencyBR } from '~/util/format';
+import { formatCurrencyBR, formatDateIso } from '~/util/format';
 
 import { Container, Header, Body, Controls, ReadInput } from './styles';
 
@@ -31,8 +31,11 @@ const schema = Yup.object().shape({
 });
 
 export default function FormRegistration({ match }) {
-  const registration = useSelector(state => state.registration.form);
+  const { id } = useParams();
+  const formRegistration = useSelector(state => state.registration.form);
+
   const dispatch = useDispatch();
+  const [registration, setRegistration] = useState();
   const [startDate, setStartDate] = useState();
   const [newPlan, setNewPlan] = useState();
   const [newStudent, setNewStudent] = useState();
@@ -45,6 +48,38 @@ export default function FormRegistration({ match }) {
     };
     // eslint-disable-next-line
   }, [])
+
+  useMemo(() => {
+    async function loadRegistration() {
+      if (id && formRegistration) {
+        if (formRegistration.start_date) {
+          await setStartDate(formatDateIso(formRegistration.start_date));
+        }
+
+        if (formRegistration.student) {
+          await setNewStudent({
+            label: formRegistration.student.name,
+            value: formRegistration.student.id,
+          });
+        }
+
+        if (formRegistration.plan) {
+          await setNewPlan({
+            label: formRegistration.plan.title,
+            value: formRegistration.plan.id,
+            duration: formRegistration.plan.duration,
+            price: formRegistration.plan.price,
+          });
+        }
+
+        if (formRegistration.plan && FormRegistration.student) {
+          setRegistration(formRegistration);
+        }
+      }
+    }
+
+    loadRegistration();
+  }, [formRegistration, id]); // eslint-disable-next-line
 
   const end_date = useMemo(() => {
     if (startDate && newPlan) {
@@ -60,8 +95,6 @@ export default function FormRegistration({ match }) {
       student_id: newStudent.value,
       plan_id: newPlan.value,
     };
-
-    console.tron.log(registrationData);
 
     if (match.path === '/registration/edit/:id') {
       dispatch(
@@ -94,6 +127,7 @@ export default function FormRegistration({ match }) {
             <Row>
               <Column mobile="12" tablet="12" desktop="12">
                 <StudentSelect
+                  getChange={newStudent}
                   name="student_id"
                   label="ALUNO"
                   setChange={setNewStudent}
@@ -107,12 +141,14 @@ export default function FormRegistration({ match }) {
                   name="plan_id"
                   label="PLANO"
                   setChange={setNewPlan}
+                  getChange={newPlan}
                 />
               </Column>
               <Column mobile="12" tablet="3" desktop="3">
                 <DatePicker
                   label="DATA INICIO"
                   name="start_date"
+                  getChange={startDate}
                   setChange={setStartDate}
                 />
               </Column>
