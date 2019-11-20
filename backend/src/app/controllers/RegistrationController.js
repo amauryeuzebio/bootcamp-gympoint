@@ -83,11 +83,14 @@ class RegistrationController {
   async show(req, res) {
     const { id } = req.params;
 
-    const registration = await Registration.findAll({
-      where: { id },
+    const registration = await Registration.findByPk(id, {
       attributes: ['id', 'price', 'start_date', 'end_date'],
       include: [
-        { model: Plan, as: 'plan', attributes: ['id', 'title'] },
+        {
+          model: Plan,
+          as: 'plan',
+          attributes: ['id', 'title', 'price', 'duration'],
+        },
         {
           model: Student,
           as: 'student',
