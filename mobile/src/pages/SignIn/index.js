@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {Image} from 'react-native';
+
+import {signInRequest} from '~/store/modules/auth/actions';
 
 import logo from '~/assets/logo.png';
 
 import * as S from './styles';
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const [id, setId] = useState();
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    dispatch(signInRequest(id));
+  }
 
   return (
     <S.Container>

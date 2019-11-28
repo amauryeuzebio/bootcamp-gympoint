@@ -8,15 +8,18 @@ export function* singIn({payload}) {
   try {
     const {id} = payload;
 
-    const res = yield call(api.post, `students/${id}`, {
+    const res = yield call(api.get, `students/${id}`, {
       id,
     });
 
     const student = res.data;
 
-    console.tron.log(student);
-
-    yield put(signInSucess(student));
+    if (student.id) {
+      yield put(signInSucess(student));
+    } else {
+      Alert.alert('Falha na autenticação', 'Aluno Não encontrado');
+      yield put(signFailure());
+    }
   } catch (error) {
     Alert.alert('Falha na autenticação', 'Aluno Não encontrado');
     yield put(signFailure());
