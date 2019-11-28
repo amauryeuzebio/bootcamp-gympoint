@@ -17,6 +17,7 @@ const routes = new Router();
 routes.post('/sessions', SessionController.store);
 routes.post('/students/:id/checkins', CheckinController.store);
 routes.post('/students/:id/help-orders', HelpOrderController.store);
+routes.get('/students/:id', StudentController.show);
 
 /** Rotas Protegidas */
 routes.use(authMiddleware);
@@ -25,7 +26,6 @@ routes.post('/users', UserController.store);
 routes.put('/users', UserController.update);
 // Students
 routes.get('/students', StudentController.index);
-routes.get('/students/:id', StudentController.show);
 routes.post('/students', StudentController.store);
 routes.put('/students/:id', StudentController.update);
 routes.delete('/students/:id', StudentController.delete);
