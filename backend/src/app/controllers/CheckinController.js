@@ -9,6 +9,7 @@ class CheckinController {
     const checkins = await Checkin.findAll({
       where: {
         student_id: req.params.id,
+        created_at: { [Op.between]: [subDays(new Date(), 7), new Date()] },
       },
     });
     return res.json(checkins);
