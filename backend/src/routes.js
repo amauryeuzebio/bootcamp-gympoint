@@ -16,6 +16,7 @@ const routes = new Router();
 /** Rotas Abertas */
 routes.post('/sessions', SessionController.store);
 routes.post('/students/:id/checkins', CheckinController.store);
+routes.get('/students/:id/checkins', CheckinController.index);
 routes.post('/students/:id/help-orders', HelpOrderController.store);
 routes.get('/students/:id', StudentController.show);
 
