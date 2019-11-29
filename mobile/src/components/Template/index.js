@@ -16,10 +16,10 @@ export default function Layout({children, isGoBack, page}) {
 Layout.propTypes = {
   children: PropTypes.element.isRequired,
   isGoBack: PropTypes.bool,
-  page: PropTypes.string,
+  page: PropTypes.func,
 };
 
 Layout.defaultProps = {
   isGoBack: false,
-  page: '',
+  page: () => {},
 };

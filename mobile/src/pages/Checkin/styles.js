@@ -10,8 +10,10 @@ export const CheckinButton = styled(Button)``;
 
 export const CheckinList = styled(FlatList).attrs({
   showsVerticalScrollIndicator: false,
+  inverted: true,
 })`
   margin-top: 20px;
+  width: 100%;
 `;
 
 export const CheckinInfo = styled.View`
@@ -29,4 +31,8 @@ export const Label = styled.Text`
 export const Time = styled.Text`
   color: #666666;
   font-size: 12px;
+`;
+
+export const List = styled.View`
+  align-items: flex-start;
 `;

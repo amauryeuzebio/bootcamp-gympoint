@@ -1,36 +1,36 @@
 import produce from 'immer';
 
 const INITIAL_STATE = {
-  checkins: [],
+  helpOrders: [],
   loading: false,
 };
 
 export default function auth(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@checkin/LIST_REQUEST': {
+      case '@helpOrder/LIST_REQUEST': {
         draft.loading = true;
         break;
       }
 
-      case '@checkin/LIST_SUCCESS': {
-        draft.checkins = action.payload;
+      case '@helpOrder/LIST_SUCCESS': {
+        draft.helpOrders = action.payload;
         draft.loading = false;
         break;
       }
 
-      case '@checkin/NEW_REQUEST': {
+      case '@helpOrder/NEW_REQUEST': {
         draft.loading = true;
         break;
       }
 
       case '@checkin/NEW_SUCCESS': {
-        draft.checkins = [...state.checkins, action.payload];
+        draft.helpOrders = [...state.helpOrders, action.payload];
         draft.loading = false;
         break;
       }
 
-      case '@checkin/CHECKIN_FAILURE': {
+      case '@helpOrder/HELP_ORDER_FAILURE': {
         draft.loading = false;
         break;
       }

@@ -6,14 +6,11 @@ import logo from '~/assets/logo2.png';
 
 import * as S from './styles';
 
-export default function Header({navigation, isGoBack, page}) {
+export default function Header({isGoBack, page}) {
   return (
     <S.Container>
       {isGoBack && (
-        <S.GoBack
-          onPress={() => {
-            navigation.navigate(page);
-          }}>
+        <S.GoBack onPress={() => page}>
           <Icon name="chevron-left" size={30} color="#ee4e62" />
         </S.GoBack>
       )}
@@ -24,13 +21,11 @@ export default function Header({navigation, isGoBack, page}) {
 }
 
 Header.propTypes = {
-  navigation: PropTypes.oneOfType([PropTypes.object]),
   isGoBack: PropTypes.bool,
-  page: PropTypes.string,
+  page: PropTypes.func,
 };
 
 Header.defaultProps = {
   isGoBack: false,
-  page: '',
-  navigation: {},
+  page: () => {},
 };

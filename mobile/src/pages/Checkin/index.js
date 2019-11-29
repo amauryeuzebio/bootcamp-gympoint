@@ -2,12 +2,13 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import {withNavigationFocus} from 'react-navigation';
-import {parseISO, formatRelative} from 'date-fns';
-import pt from 'date-fns/locale/pt';
 
 import Template from '~/components/Template';
 
-import {checkinListRequest} from '~/store/modules/checkin/actions';
+import {
+  checkinListRequest,
+  checkinRequest,
+} from '~/store/modules/checkin/actions';
 
 import * as S from './styles';
 
@@ -27,11 +28,9 @@ function Checkin({isFocused}) {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    console.tron.log(checkins);
-  }, [checkins]);
-
-  function handleNewCheckin() {}
+  function handleNewCheckin() {
+    dispatch(checkinRequest(student.id));
+  }
 
   return (
     <Template>
@@ -39,22 +38,18 @@ function Checkin({isFocused}) {
         <S.CheckinButton onPress={handleNewCheckin}>
           Novo check-in
         </S.CheckinButton>
-
-        <S.CheckinList
-          data={checkins}
-          keyExtractor={item => String(item.id)}
-          renderItem={({item, index}) => (
-            <S.CheckinInfo>
-              <S.Label>Check #{index + 1}</S.Label>
-              <S.Time>
-                {formatRelative(parseISO(item.createdAt), new Date(), {
-                  locale: pt,
-                  addSuffix: true,
-                })}
-              </S.Time>
-            </S.CheckinInfo>
-          )}
-        />
+        <S.List>
+          <S.CheckinList
+            data={checkins}
+            keyExtractor={item => String(item.id)}
+            renderItem={({item, index}) => (
+              <S.CheckinInfo>
+                <S.Label>Check #{index + 1}</S.Label>
+                <S.Time>{item.dateFormatted}</S.Time>
+              </S.CheckinInfo>
+            )}
+          />
+        </S.List>
       </S.Container>
     </Template>
   );
