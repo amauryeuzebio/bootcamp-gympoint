@@ -10,3 +10,7 @@ export default function HelpOrder() {
     </View>
   );
 }
+
+HelpOrder.navigationOptions = {
+  tabBarLabel: 'Pedir Ajuda',
+};
