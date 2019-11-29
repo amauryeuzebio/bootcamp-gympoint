@@ -3,7 +3,7 @@ import {Image, TouchableOpacity} from 'react-native';
 
 export const Container = styled.View`
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background: #fff;
   height: 64px;
@@ -12,9 +12,8 @@ export const Container = styled.View`
   padding: 0 20px;
 `;
 
-export const GoBack = styled(TouchableOpacity)`
-  position: absolute;
-  left: 20px;
-`;
+export const GoBack = styled(TouchableOpacity)``;
+
+export const Logout = styled(TouchableOpacity)``;
 
 export const Logo = styled(Image)``;
