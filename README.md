@@ -7,12 +7,9 @@
 </h1>
 
 ## Pré requesitos:
-   OS: 
-    Windows, Mac ou Linux
-   Backend: 
-    Node , NPM e Yarn, Docker com Docker composer (para instalação dos bancos)
-   Mobile: 
-    Emulador Android ou IOS
+   - OS: Windows, Mac ou Linux
+   - Backend: Node , NPM e Yarn, Docker com Docker composer (para instalação dos bancos)
+   - Mobile: Emulador Android ou IOS
 
 ## Como utilizar
 
@@ -37,9 +34,9 @@
 
 - Criar estrutura do banco de dados
 
-`yarn sequelize db:migrate`
+  `yarn sequelize db:migrate`
 
-`yarn sequelize db:seed:all`
+  `yarn sequelize db:seed:all`
   
 - Inicialize a api
 
@@ -50,4 +47,21 @@
   - http://localhost:3333
   ## **OBS: Vai retornar (error: "Token not provider!")
 
-## Fim Backend ##
+## Frontend ##
+
+<h1 align="center">
+<img src="https://raw.githubusercontent.com/amauryeuzebio/bootcamp-gympoint/master/imgs-readme/front.png">
+</h1>
+
+- Instale as dependências (entrar na pasta frontend):
+
+  `yarn install`
+
+- Inicialize a aplicação
+
+  `yarn start`
+
+- Teste utilizando o browser
+
+  - http://localhost:3000
+  ## **OBS: Usuario: admin@gympoint.com Senha: 123456
