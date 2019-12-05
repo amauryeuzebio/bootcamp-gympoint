@@ -11,6 +11,7 @@ class CheckinController {
         student_id: req.params.id,
         created_at: { [Op.between]: [subDays(new Date(), 7), new Date()] },
       },
+      order: ['created_at'],
     });
     return res.json(checkins);
   }
@@ -31,7 +32,7 @@ class CheckinController {
       },
     });
 
-    if (countCheckins > 6) {
+    if (countCheckins > 4) {
       return res.status(400).json({ error: 'Checkins amount exceeded!' });
     }
 
