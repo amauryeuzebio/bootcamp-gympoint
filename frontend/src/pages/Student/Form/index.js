@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+import { MdDone, MdArrowBack } from 'react-icons/md';
 
 import {
   studentsSaveRequest,
@@ -51,9 +52,18 @@ export default function FormStudent({ match }) {
         <strong>Cadastro de Alunos</strong>
         <Controls>
           <Link to="/student">
-            <Button label="Voltar" color="#CCCCCC" />
+            <Button
+              label="Voltar"
+              icon={<MdArrowBack size={24} color="#fff" />}
+              color="#CCCCCC"
+            />
           </Link>
-          <Button label="Salvar" type="submit" form="formStudent" />
+          <Button
+            label="Salvar"
+            icon={<MdDone size={24} color="#fff" />}
+            type="submit"
+            form="formStudent"
+          />
         </Controls>
       </Header>
       <Body>

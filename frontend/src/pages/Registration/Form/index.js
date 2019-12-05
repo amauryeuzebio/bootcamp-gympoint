@@ -5,6 +5,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { format, addMonths } from 'date-fns';
+import { MdDone, MdArrowBack } from 'react-icons/md';
 
 import {
   registrationsSaveRequest,
@@ -111,9 +112,18 @@ export default function FormRegistration({ match }) {
         <strong>Cadastro de Matricula</strong>
         <Controls>
           <Link to="/registration">
-            <Button label="Voltar" color="#CCCCCC" />
+            <Button
+              label="Voltar"
+              icon={<MdArrowBack size={24} color="#fff" />}
+              color="#CCCCCC"
+            />
           </Link>
-          <Button label="Salvar" type="submit" form="formRegistration" />
+          <Button
+            label="Salvar"
+            icon={<MdDone size={24} color="#fff" />}
+            type="submit"
+            form="formRegistration"
+          />
         </Controls>
       </Header>
       <Body>

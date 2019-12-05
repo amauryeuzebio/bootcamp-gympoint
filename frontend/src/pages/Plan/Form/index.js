@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { MdDone, MdArrowBack } from 'react-icons/md';
 
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
@@ -85,9 +86,18 @@ export default function FormPlan({ match }) {
         <strong>Cadastro de Plano</strong>
         <Controls>
           <Link to="/plan">
-            <Button label="Voltar" color="#CCCCCC" />
+            <Button
+              label="Voltar"
+              icon={<MdArrowBack size={24} color="#fff" />}
+              color="#CCCCCC"
+            />
           </Link>
-          <Button label="Salvar" type="submit" form="formPlan" />
+          <Button
+            label="Salvar"
+            icon={<MdDone size={24} color="#fff" />}
+            type="submit"
+            form="formPlan"
+          />
         </Controls>
       </Header>
       <Body>
