@@ -80,17 +80,17 @@
 
 - Instalar app no emulador android
 
-`react-native run-android`
+  `react-native run-android`
 
 - Instalar app no emulador IOS:
 
-`cd ios && pod install`
+  `cd ios && pod install`
 
-`react-native run-ios`
+  `react-native run-ios`
 
 - Inicialize a aplicação:
 
   `yarn start`
 
 - Abra a aplcação no emulador:
-## **OBS: é necessario realizar o cadastro de 1 aluno no frontend pois para entrar no app é necessario o codigo id de um aluno.
+  ## **OBS: é necessario realizar o cadastro de 1 aluno no frontend pois para entrar no app é necessario o codigo id de um aluno.
