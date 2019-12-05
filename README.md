@@ -93,4 +93,4 @@
   `yarn start`
 
 - Abra a aplcação no emulador:
-  ## **OBS: é necessario realizar o cadastro de 1 aluno no frontend pois para entrar no app é necessario o codigo id de um aluno.
+  ## **OBS: é necessario realizar o cadastro e realizar a matricula de 1 aluno no frontend pois para entrar no app é necessario o codigo id de um aluno que esteja com matricula ativa.
