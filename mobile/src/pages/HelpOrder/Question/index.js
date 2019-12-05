@@ -11,6 +11,7 @@ import * as S from './styles';
 export default function Question({navigation}) {
   const dispatch = useDispatch();
   const student = useSelector(state => state.auth.student);
+  const loading = useSelector(state => state.helpOrder.loading);
 
   const [question, setQuestion] = useState('');
 
@@ -31,7 +32,9 @@ export default function Question({navigation}) {
           returnKeyType="send"
           onSubmitEditing={handleSubmit}
         />
-        <S.SubmitButton onPress={handleSubmit}>Enviar Pedido</S.SubmitButton>
+        <S.SubmitButton loading={loading} onPress={handleSubmit}>
+          Enviar Pedido
+        </S.SubmitButton>
       </S.Container>
     </Template>
   );

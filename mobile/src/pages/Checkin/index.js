@@ -17,6 +17,7 @@ function Checkin({isFocused}) {
 
   const student = useSelector(state => state.auth.student);
   const checkins = useSelector(state => state.checkin.checkins);
+  const loading = useSelector(state => state.checkin.loading);
 
   function loadCheckins() {
     dispatch(checkinListRequest(student.id));
@@ -35,7 +36,7 @@ function Checkin({isFocused}) {
   return (
     <Template>
       <S.Container>
-        <S.CheckinButton onPress={handleNewCheckin}>
+        <S.CheckinButton loading={loading} onPress={handleNewCheckin}>
           Novo check-in
         </S.CheckinButton>
         <S.List>

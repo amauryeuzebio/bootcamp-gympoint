@@ -43,17 +43,23 @@ export function* newHelpOrder({payload}) {
   try {
     const {id, question, navigation} = payload;
 
-    const res = yield call(api.post, `students/${id}/help-orders`, {
-      question,
-    });
+    if (question) {
+      const res = yield call(api.post, `students/${id}/help-orders`, {
+        question,
+      });
 
-    const help = res.data;
+      const help = res.data;
 
-    yield put(helpOrderSuccess(help));
+      yield put(helpOrderSuccess(help));
 
-    navigation.navigate('HelpOrder');
+      navigation.navigate('HelpOrder');
+    } else {
+      Alert.alert('Error', 'Informe seu pedido de auxilio');
+
+      yield put(helpOrderFailure());
+    }
   } catch (error) {
-    Alert.alert('Error', 'Você já realizou o limite máximo de checkins');
+    Alert.alert('Error', 'Falha ao solicitar ajuda!');
     yield put(helpOrderFailure());
   }
 }
