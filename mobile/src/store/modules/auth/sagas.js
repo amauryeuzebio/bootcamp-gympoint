@@ -6,7 +6,7 @@ import {signInSucess, signFailure} from './actions';
 
 export function* singIn({payload}) {
   try {
-    const {id} = payload;
+    const {id = -1} = payload;
 
     const res = yield call(api.get, `students/${id}`, {
       id,
@@ -17,11 +17,11 @@ export function* singIn({payload}) {
     if (student.id) {
       yield put(signInSucess(student));
     } else {
-      Alert.alert('Falha na autenticação', 'Aluno Não encontrado');
+      Alert.alert('Falha na autenticação', 'Verifique com a administração');
       yield put(signFailure());
     }
   } catch (error) {
-    Alert.alert('Falha na autenticação', 'Aluno Não encontrado');
+    Alert.alert('Falha na autenticação', 'Verifique com a administração');
     yield put(signFailure());
   }
 }
