@@ -8,10 +8,28 @@ import Queue from '../../lib/Queue';
 class HelpOrderController {
   async index(req, res) {
     const { id } = req.params;
+    const { page = 1 } = req.query; // se não for informado por padrão pagina 1
+    const perPage = process.env.PER_PAGE_MOBILE || 5;
 
-    const orders = await HelpOrder.findAll({ where: { student_id: id } });
+    const count = await HelpOrder.count({
+      where: { student_id: id },
+    });
 
-    return res.json(orders);
+    const orders = await HelpOrder.findAll({
+      where: { student_id: id },
+      order: [['id', 'DESC']],
+      limit: perPage,
+      offset: (page - 1) * perPage,
+    });
+
+    const data = {
+      totalPages: Math.ceil(count / perPage),
+      totalRecords: count,
+      pageLimit: perPage,
+      orders,
+    };
+
+    return res.json(data);
   }
 
   async show(req, res) {
