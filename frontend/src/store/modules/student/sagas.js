@@ -13,7 +13,7 @@ import {
 
 function* getStudent({ payload }) {
   try {
-    const response = yield call(api.get, `/students/${payload.id}`);
+    const response = yield call(api.get, `/student/${payload.id}`);
     yield put(studentsGetSuccess(response.data));
   } catch (error) {
     toast.error('Aluno não localizado!');

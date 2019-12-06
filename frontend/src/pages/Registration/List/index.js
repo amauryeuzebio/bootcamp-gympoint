@@ -131,7 +131,9 @@ export default function Registration() {
             {registrations.map(registration => (
               <tr key={String(registration.id)}>
                 <Td>{registration.student.name}</Td>
-                <Td align="center">{registration.plan.title}</Td>
+                <Td align="center">
+                  {registration.plan && registration.plan.title}
+                </Td>
                 <Td align="center">{dateFormatted(registration.start_date)}</Td>
                 <Td align="center">{dateFormatted(registration.end_date)}</Td>
                 <Td align="center">{registration.active ? 'SIM' : 'NÃO'}</Td>
@@ -147,7 +149,7 @@ export default function Registration() {
                       type="buttom"
                       onClick={() =>
                         handleDel(registration.id, {
-                          plan: registration.plan.title,
+                          plan: registration.plan && registration.plan.title,
                           name: registration.student.name,
                         })
                       }

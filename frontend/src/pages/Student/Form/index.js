@@ -21,9 +21,15 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email()
     .required('Insira um e-mail válido'),
-  age: Yup.number().required('Informe sua idade'),
-  weight: Yup.number('Informe seu peso').required('Informe seu peso'),
-  height: Yup.number('Informe seu peso').required('Informe sua altura'),
+  age: Yup.number()
+    .typeError('Informe sua idade')
+    .required('Informe sua idade'),
+  weight: Yup.number('Informe seu peso')
+    .typeError('Informe seu peso')
+    .required('Informe seu peso'),
+  height: Yup.number('Informe seu peso')
+    .typeError('Informe sua altura')
+    .required('Informe sua altura'),
 });
 
 export default function FormStudent({ match }) {
@@ -99,19 +105,29 @@ export default function FormStudent({ match }) {
               <Column mobile="12" tablet="4" desktop="4">
                 <CustomInput>
                   <strong>IDADE</strong>
-                  <Input name="age" />
+                  <Input name="age" type="number" placeholder="Sua Idade" />
                 </CustomInput>
               </Column>
               <Column mobile="12" tablet="4" desktop="4">
                 <CustomInput>
                   <strong>PESO (em kg)</strong>
-                  <Input name="weight" />
+                  <Input
+                    name="weight"
+                    step="0.01"
+                    type="number"
+                    placeholder="Seu Peso"
+                  />
                 </CustomInput>
               </Column>
               <Column mobile="12" tablet="4" desktop="4">
                 <CustomInput>
                   <strong>ALTURA</strong>
-                  <Input name="height" />
+                  <Input
+                    name="height"
+                    step="0.01"
+                    type="number"
+                    placeholder="Sua Altura"
+                  />
                 </CustomInput>
               </Column>
             </Row>

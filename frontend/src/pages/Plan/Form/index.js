@@ -23,9 +23,13 @@ import {
 } from './styles';
 
 const schema = Yup.object().shape({
-  title: Yup.string().required(),
-  duration: Yup.number().required(),
-  price: Yup.number().required(),
+  title: Yup.string().required('Insira a descrição do plano'),
+  duration: Yup.number()
+    .typeError('Informe a quantidade de meses')
+    .required('Informe a quantidade de meses'),
+  price: Yup.number()
+    .typeError('Informe o preço')
+    .required('Informe o preço'),
 });
 
 export default function FormPlan({ match }) {
