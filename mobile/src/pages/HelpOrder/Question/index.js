@@ -32,7 +32,10 @@ export default function Question({navigation}) {
           returnKeyType="send"
           onSubmitEditing={handleSubmit}
         />
-        <S.SubmitButton loading={loading} onPress={handleSubmit}>
+        <S.SubmitButton
+          enabled={!loading}
+          loading={loading}
+          onPress={handleSubmit}>
           Enviar Pedido
         </S.SubmitButton>
       </S.Container>

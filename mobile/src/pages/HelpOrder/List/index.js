@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import {withNavigationFocus} from 'react-navigation';
@@ -6,7 +6,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Template from '~/components/Template';
 
-import {helpOrderListRequest} from '~/store/modules/helpOrder/actions';
+import {
+  helpOrderListRequest,
+  helpOrderReset,
+} from '~/store/modules/helpOrder/actions';
 
 import * as S from './styles';
 
@@ -15,16 +18,39 @@ function HelpOrder({navigation, isFocused}) {
 
   const student = useSelector(state => state.auth.student);
   const helpOrders = useSelector(state => state.helpOrder.helpOrders);
+  const totalPages = useSelector(state => state.helpOrder.totalPages);
+  const loading = useSelector(state => state.helpOrder.loading);
+  const refresh = useSelector(state => state.helpOrder.refresh);
 
-  function loadHelpOrder() {
-    dispatch(helpOrderListRequest(student.id));
+  const [page, setPage] = useState(1);
+
+  function loadHelpOrder(pageNumber = page) {
+    if (pageNumber <= totalPages) {
+      dispatch(helpOrderListRequest({id: student.id, page: pageNumber}));
+
+      setPage(pageNumber + 1);
+    }
   }
+
+  useEffect(() => {
+    if (refresh) {
+      setPage(1);
+    }
+  }, [refresh]);
 
   useEffect(() => {
     if (isFocused) {
       loadHelpOrder();
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    // will Unmount
+    return () => {
+      dispatch(helpOrderReset());
+    };
+    // eslint-disable-next-line
+  }, [])
 
   function handleNewHelp() {
     navigation.navigate('Question');
@@ -40,6 +66,9 @@ function HelpOrder({navigation, isFocused}) {
         <S.OrderList
           data={helpOrders}
           keyExtractor={item => String(item.id)}
+          onEndReached={() => loadHelpOrder()}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={loading && <S.Loading />}
           renderItem={({item}) => (
             <S.Order
               onPress={() => navigation.navigate('Answer', {helpOrder: item})}>

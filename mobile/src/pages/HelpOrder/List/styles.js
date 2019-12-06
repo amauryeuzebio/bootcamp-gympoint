@@ -47,3 +47,10 @@ export const Question = styled.Text`
   color: #666666;
   line-height: 26px;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#999',
+})`
+  margin: 30px 0;
+`;

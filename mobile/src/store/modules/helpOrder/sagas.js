@@ -12,13 +12,15 @@ import {
 
 export function* listHelpOrder({payload}) {
   try {
-    const {id} = payload;
+    const {id, page} = payload.data;
 
-    const res = yield call(api.get, `students/${id}/help-orders`, {
+    const res = yield call(api.get, `students/${id}/help-orders?page=${page}`, {
       id,
     });
 
-    const data = res.data.map(helpOrder => ({
+    const total = res.data.totalPages;
+
+    const data = res.data.orders.map(helpOrder => ({
       ...helpOrder,
       dateFormattedAnswerAt: helpOrder.answer_at
         ? formatRelative(parseISO(helpOrder.answer_at), new Date(), {
@@ -32,7 +34,7 @@ export function* listHelpOrder({payload}) {
       ),
     }));
 
-    yield put(helpOrderListSuccess(data));
+    yield put(helpOrderListSuccess({helpOrders: data, totalPages: total}));
   } catch (error) {
     Alert.alert('Erro:', 'Erro ao listar pedido de ajuda');
     yield put(helpOrderFailure());

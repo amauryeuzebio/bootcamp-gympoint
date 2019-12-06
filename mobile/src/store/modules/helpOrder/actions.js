@@ -1,7 +1,7 @@
-export function helpOrderListRequest(id) {
+export function helpOrderListRequest(data) {
   return {
     type: '@helpOrder/LIST_REQUEST',
-    payload: {id},
+    payload: {data},
   };
 }
 
@@ -29,5 +29,11 @@ export function helpOrderSuccess(helpOrder) {
 export function helpOrderFailure() {
   return {
     type: '@helpOrder/HELP_ORDER_FAILURE',
+  };
+}
+
+export function helpOrderReset() {
+  return {
+    type: '@helpOrder/HELP_ORDER_RESET',
   };
 }

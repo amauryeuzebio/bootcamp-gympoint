@@ -29,7 +29,10 @@ export default function SignIn() {
           value={id}
           onChangeText={setId}
         />
-        <S.SubmitButton loading={loading} onPress={handleSubmit}>
+        <S.SubmitButton
+          enabled={!loading}
+          loading={loading}
+          onPress={handleSubmit}>
           Entrar no sistema
         </S.SubmitButton>
       </S.Form>
