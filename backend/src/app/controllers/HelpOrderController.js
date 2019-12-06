@@ -90,10 +90,16 @@ class HelpOrderController {
       return res.status(400).json({ error: 'Order not exists!' });
     }
 
-    order.update({
+    const orderAnswer = await order.update({
       answer,
       answer_at: new Date(),
     });
+
+    const ownerSocket = req.connectedUsers[order.student.id];
+
+    if (ownerSocket) {
+      req.io.to(ownerSocket).emit('orderAnswer', orderAnswer);
+    }
 
     const email = {
       student: order.student.name,
