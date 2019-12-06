@@ -25,6 +25,11 @@ function HelpOrder({navigation, isFocused}) {
   const [page, setPage] = useState(1);
 
   function loadHelpOrder(pageNumber = page) {
+    if (totalPages === 0) {
+      dispatch(helpOrderListRequest({id: student.id, page: 1}));
+      setPage(2);
+    }
+
     if (pageNumber <= totalPages) {
       dispatch(helpOrderListRequest({id: student.id, page: pageNumber}));
 
