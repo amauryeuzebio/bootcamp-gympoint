@@ -26,6 +26,20 @@ export function helpOrderSuccess(helpOrder) {
   };
 }
 
+export function orderAnswerRequest(helpOrder) {
+  return {
+    type: '@helpOrder/ORDER_ANSWER_REQUEST',
+    payload: helpOrder,
+  };
+}
+
+export function orderAnswerSuccess(helpOrder) {
+  return {
+    type: '@helpOrder/ORDER_ANSWER_SUCCESS',
+    payload: helpOrder,
+  };
+}
+
 export function helpOrderFailure() {
   return {
     type: '@helpOrder/HELP_ORDER_FAILURE',

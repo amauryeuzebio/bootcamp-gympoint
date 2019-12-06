@@ -1,14 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {useSelector, useDispatch} from 'react-redux';
 import {withNavigationFocus} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import socketio from 'socket.io-client';
+
+import socketApi from '~/services/socket';
 
 import Template from '~/components/Template';
 
 import {
   helpOrderListRequest,
   helpOrderReset,
+  orderAnswerRequest,
 } from '~/store/modules/helpOrder/actions';
 
 import * as S from './styles';
@@ -23,6 +27,22 @@ function HelpOrder({navigation, isFocused}) {
   const refresh = useSelector(state => state.helpOrder.refresh);
 
   const [page, setPage] = useState(1);
+
+  const socket = useMemo(
+    () =>
+      socketio(socketApi.baseURL, {
+        query: {
+          user_id: student.id,
+        },
+      }),
+    [student.id]
+  );
+
+  useEffect(() => {
+    socket.on('orderAnswer', orderAnswer => {
+      dispatch(orderAnswerRequest(orderAnswer));
+    });
+  }, [socket]);
 
   function loadHelpOrder(pageNumber = page) {
     if (totalPages === 0) {

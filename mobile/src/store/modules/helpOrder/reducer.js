@@ -36,6 +36,28 @@ export default function auth(state = INITIAL_STATE, action) {
         break;
       }
 
+      case '@helpOrder/ORDER_ANSWER_SUCCESS': {
+        const helpOrders = [];
+
+        state.helpOrders.map(help => {
+          if (help.id === action.payload.id) {
+            helpOrders.push({
+              ...help,
+              answer_at: action.payload.answer_at,
+              answer: action.payload.answer,
+              dateFormattedAnswerAt: action.payload.dateFormattedAnswerAt,
+              dateFormattedCreatedAt: action.payload.dateFormattedCreatedAt,
+            });
+          } else {
+            helpOrders.push(help);
+          }
+        });
+
+        draft.helpOrders = helpOrders;
+
+        break;
+      }
+
       case '@helpOrder/HELP_ORDER_FAILURE': {
         draft.loading = false;
         draft.refresh = false;

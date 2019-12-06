@@ -7,6 +7,7 @@ import api from '~/services/api';
 import {
   helpOrderListSuccess,
   helpOrderSuccess,
+  orderAnswerSuccess,
   helpOrderFailure,
 } from './actions';
 
@@ -66,7 +67,29 @@ export function* newHelpOrder({payload}) {
   }
 }
 
+export function* orderAnswer({payload}) {
+  const data = yield {
+    id: payload.id,
+    answer: payload.answer,
+    answer_at: payload.answer_at,
+    dateFormattedAnswerAt: formatRelative(
+      parseISO(payload.answer_at),
+      new Date(),
+      {
+        locale: pt,
+      }
+    ),
+    dateFormattedCreatedAt: formatRelative(
+      parseISO(payload.createdAt),
+      new Date(),
+      {locale: pt}
+    ),
+  };
+  yield put(orderAnswerSuccess(data));
+}
+
 export default all([
   takeLatest('@helpOrder/LIST_REQUEST', listHelpOrder),
   takeLatest('@helpOrder/NEW_REQUEST', newHelpOrder),
+  takeLatest('@helpOrder/ORDER_ANSWER_REQUEST', orderAnswer),
 ]);
