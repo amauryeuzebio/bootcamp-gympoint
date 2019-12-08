@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdCheckCircle } from 'react-icons/md';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
@@ -136,7 +136,13 @@ export default function Registration() {
                 </Td>
                 <Td align="center">{dateFormatted(registration.start_date)}</Td>
                 <Td align="center">{dateFormatted(registration.end_date)}</Td>
-                <Td align="center">{registration.active ? 'SIM' : 'NÃO'}</Td>
+                <Td align="center">
+                  <MdCheckCircle
+                    name="check-circle"
+                    color={registration.active ? '#42CB59' : '#999999'}
+                    size={20}
+                  />
+                </Td>
                 <Td>
                   <Actions>
                     <Edit
