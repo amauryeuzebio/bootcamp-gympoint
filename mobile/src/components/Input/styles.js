@@ -15,4 +15,6 @@ export const Input = styled.TextInput.attrs({
   font-size: 15px;
   color: #333;
   border: 1px solid #dddddd;
+  min-height: 42;
+  padding-left: 10px;
 `;

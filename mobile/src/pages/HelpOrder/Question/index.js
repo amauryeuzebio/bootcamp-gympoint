@@ -25,11 +25,12 @@ export default function Question({navigation}) {
         <S.QuestionInput
           textAlignVertical="top"
           placeholder="Digite seu pedido de auxílio"
+          minHeight={200}
           numberOfLines={10}
           multiline
           value={question}
           onChangeText={setQuestion}
-          returnKeyType="send"
+          returnKeyType="go"
           onSubmitEditing={handleSubmit}
         />
         <S.SubmitButton
