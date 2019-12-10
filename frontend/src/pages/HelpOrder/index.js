@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+import socketio from 'socket.io-client';
 
 import {
   answerRequest,
@@ -14,6 +15,7 @@ import Pagination from '~/components/Pagination';
 import Modal from '~/components/Modal';
 
 import api from '~/services/api';
+import socketApi from '~/services/socket';
 
 import { Container, Header, Body, Reply, ModalContainer } from './styles';
 
@@ -25,6 +27,7 @@ export default function HelpOrder() {
   const helpOrder = useSelector(state => state.help.order);
   const awswerId = useSelector(state => state.help.awswerId);
   const modal = useSelector(state => state.help.modal);
+  const user = useSelector(state => state.user.profile);
   const dispatch = useDispatch();
 
   const [helps, setHelps] = useState([]);
@@ -33,6 +36,23 @@ export default function HelpOrder() {
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageLimit, setPageLimit] = useState(20);
   const [pageNeighbours, setPageNeighbours] = useState(2);
+
+  const socket = useMemo(
+    () =>
+      socketio(socketApi.baseURL, {
+        query: {
+          user_id: `FRONT-${user.id}`,
+          source: 'Front',
+        },
+      }),
+    [user.id]
+  );
+
+  useEffect(() => {
+    socket.on('orderQuestion', orderQuestion => {
+      setHelps([...helps, orderQuestion]);
+    });
+  }, [helps, socket]);
 
   useEffect(() => {
     // will Unmount
