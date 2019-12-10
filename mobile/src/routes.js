@@ -46,7 +46,8 @@ export default (signedIn = false) =>
               inactiveTintColor: '#999999',
               style: {
                 backgroundColor: '#fff',
-                marginBottom: 8,
+                // marginBottom: 8,
+                paddingBottom: 8,
               },
             },
           }

@@ -12,6 +12,7 @@ export const Container = styled.KeyboardAvoidingView.attrs({
   justify-content: center;
   align-items: center;
   padding: 0 30px;
+  background-color: #eeef;
 `;
 
 export const Form = styled.View`
