@@ -63,6 +63,21 @@ class HelpOrderController {
 
     const helpOrder = await HelpOrder.create({ student_id: id, question });
 
+    const helpOrderData = {
+      id: helpOrder.id,
+      question: helpOrder.question,
+      student: {
+        id: student.id,
+        name: student.name,
+      },
+    };
+
+    const frontSocket = req.connectedUsersFront;
+
+    if (frontSocket) {
+      req.io.to('front').emit('orderQuestion', helpOrderData);
+    }
+
     return res.json(helpOrder);
   }
 

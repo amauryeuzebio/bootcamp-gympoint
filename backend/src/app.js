@@ -18,17 +18,29 @@ class App {
     this.routes();
 
     this.connectedUsers = {};
+    this.connectedUsersFront = [];
   }
 
   socket() {
     this.io = io(this.server);
 
     this.io.on('connection', socket => {
-      const { user_id } = socket.handshake.query;
-      this.connectedUsers[user_id] = socket.id;
+      const { user_id, source = 'Mobile' } = socket.handshake.query;
+
+      if (source === 'Mobile') {
+        this.connectedUsers[user_id] = socket.id;
+      } else {
+        this.connectedUsersFront.push(socket.id);
+        socket.join('front');
+      }
 
       socket.on('disconnect', () => {
-        delete this.connectedUsers[user_id];
+        if (source === 'Mobile') {
+          delete this.connectedUsers[user_id];
+        } else {
+          this.connectedUsersFront.splice(socket.id, 1);
+          socket.leave('front');
+        }
       });
     });
   }
@@ -40,6 +52,7 @@ class App {
     this.app.use((req, res, next) => {
       req.io = this.io;
       req.connectedUsers = this.connectedUsers;
+      req.connectedUsersFront = this.connectedUsersFront;
 
       next();
     });
