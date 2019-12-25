@@ -47,6 +47,11 @@
   - http://localhost:3333
   ## **OBS: Vai retornar (error: "Token not provider!")
 
+- Envio de email
+
+  `yarn run queue`
+  ## **OBS: Necessario preencher o dados do smtp no arquivo .env
+
 ## Frontend ##
 
 <h1 align="center">
