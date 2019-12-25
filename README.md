@@ -77,7 +77,8 @@
   `yarn install`
 
 - Inicialize seu emulador (Android ou IOS):
-
+  ## **OBS: Para a Certificação GoStack ultilizar plataforma android para os testes
+  
 - Instalar app no emulador android
 
   `react-native run-android`
